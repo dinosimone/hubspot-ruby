@@ -96,8 +96,9 @@ module Hubspot
     follow_redirects true
 
     def self.submit(path, opts)
-      url = generate_url(path, opts[:params], { base_url: 'https://forms.hubspot.com', hapikey: false })
-      post(url, body: opts[:body], headers: { 'Content-Type' => 'application/x-www-form-urlencoded' })
+      url = generate_url(path, opts[:params], { base_url: 'https://forms.hubspot.com' })
+      params = URI.encode(opts[:body].map{|k,v| "#{k}=#{v}"}.join("&"))
+      post(url, body: params, headers: { 'Content-Type' => 'application/x-www-form-urlencoded' }, :debug_output => $stdout)
     end
   end
 end

@@ -7,6 +7,7 @@ module Hubspot
   # {http://developers.hubspot.com/docs/methods/deals/deals_overview}
   #
   class Deal
+    ALL_DEAL_PATH = "/deals/v1/deal/paged" 
     CREATE_DEAL_PATH = "/deals/v1/deal"
     DEAL_PATH = "/deals/v1/deal/:deal_id"
     RECENT_UPDATED_PATH = "/deals/v1/deal/recent/modified"
@@ -52,6 +53,14 @@ module Hubspot
       def find(deal_id)
         response = Hubspot::Connection.get_json(DEAL_PATH, { deal_id: deal_id })
         new(response)
+      end
+
+      # Get all of the deals in a portal. Returns a paginated set of deals.
+      # {https://developers.hubspot.com/docs/methods/deals/get-all-deals}
+      # @param limit [Integer] the amount of deals to return.
+      # @param offset [Integer] pages back through recent contacts.
+      def all(opts = {})
+        Hubspot::Connection.get_json(ALL_DEAL_PATH, opts)
       end
 
       # Find recent updated deals.
