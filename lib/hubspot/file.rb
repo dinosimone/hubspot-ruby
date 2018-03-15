@@ -37,7 +37,6 @@ module Hubspot
                                       )
         new(response)
       end
-
     end
 
     # Permanently delete a file and all related data and thumbnails from file manager.
