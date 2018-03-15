@@ -22,6 +22,15 @@ module Hubspot
         no_parse ? response : response.parsed_response
       end
 
+      def post_multipart(path, opts)
+        url = generate_url(path, opts[:params])
+        response = post(url, body: opts[:body], headers: { 'Content-Type' => '"multipart/form-data"' }, format: :multipart)
+        log_request_and_response url, response, opts[:body]
+        raise(Hubspot::RequestError.new(response)) unless response.success?
+
+        JSON.parse(response.body)
+      end
+
       def put_json(path, opts)
         url = generate_url(path, opts[:params])
         response = put(url, body: opts[:body].to_json, headers: { 'Content-Type' => 'application/json' }, format: :json)
