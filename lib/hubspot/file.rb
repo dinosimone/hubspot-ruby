@@ -24,7 +24,18 @@ module Hubspot
     class << self
       def find_by_id(file_id)
         response = Hubspot::Connection.get_json(GET_FILE_PATH, { file_id: file_id })
-	new(response)
+        new(response)
+      end
+
+      # {https://developers.hubspot.com/docs/methods/files/post_files}
+      def create!(local_path, hubspot_folder_paths = '')
+        files = {'files': open(local_path)}
+        response = Hubspot::Connection.post_multipart(
+                                        LIST_FILE_PATH, 
+                                        params: {},
+                                        body: { data: { "folder_paths": hubspot_folder_paths }, files: files }
+                                      )
+        new(response)
       end
     end
 
